@@ -4,8 +4,8 @@ resource "aws_lb" "alb_for_autoscaling" {
   load_balancer_type = "application"
   subnets            = module.vpc.public_subnets
   security_groups = [
-    aws_security_group.for_lb.id,
-    aws_security_group.for_ec2.id
+    aws_security_group.sg_for_lb.id,
+    aws_security_group.sg_for_ec2.id
   ]
 }
 

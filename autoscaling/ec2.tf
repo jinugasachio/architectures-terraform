@@ -8,7 +8,7 @@ resource "aws_launch_template" "test" {
   image_id               = data.aws_ami.test.image_id
   instance_type          = "t2.micro"
   key_name               = "jinugasachioforaws"
-  vpc_security_group_ids = [aws_security_group.for_ec2.id]
+  vpc_security_group_ids = [aws_security_group.sg_for_ec2.id]
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.test.arn

@@ -1,1 +1,3 @@
 # autoscaling
+
+![architecture](architecture.png)

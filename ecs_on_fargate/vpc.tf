@@ -25,6 +25,10 @@ resource "aws_subnet" "public_0" {
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true # このサブネットで起動したインスタンスにパブリックIPアドレスを自動的に割り当てる。
   availability_zone       = "ap-northeast-1a"
+
+  tags = {
+    Name = "public_0"
+  }
 }
 
 resource "aws_subnet" "public_1" {
@@ -32,10 +36,18 @@ resource "aws_subnet" "public_1" {
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1c"
+
+  tags = {
+    Name = "public_1"
+  }
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.example.id
+
+  tags = {
+    Name = "public"
+  }
 }
 
 # VPC内の通信を有効にするlocalルートは自動で生成される。
@@ -65,6 +77,10 @@ resource "aws_subnet" "private_0" {
   cidr_block              = "10.0.65.0/24"
   map_public_ip_on_launch = false # プライベートなので。
   availability_zone       = "ap-northeast-1a"
+
+  tags = {
+    Name = "private_0"
+  }
 }
 
 resource "aws_subnet" "private_1" {
@@ -72,14 +88,26 @@ resource "aws_subnet" "private_1" {
   cidr_block              = "10.0.66.0/24"
   map_public_ip_on_launch = false # プライベートなので。
   availability_zone       = "ap-northeast-1c"
+
+  tags = {
+    Name = "private_1"
+  }
 }
 
 resource "aws_route_table" "private_0" {
   vpc_id = aws_vpc.example.id
+
+  tags = {
+    Name = "private_0"
+  }
 }
 
 resource "aws_route_table" "private_1" {
   vpc_id = aws_vpc.example.id
+
+  tags = {
+    Name = "private_1"
+  }
 }
 
 resource "aws_route" "private_0" {
@@ -122,10 +150,18 @@ resource "aws_nat_gateway" "nat_gateway_0" {
   allocation_id = aws_eip.nat_gateway_0.id # 割り当てられるEIPを設定
   subnet_id     = aws_subnet.public_0.id
   depends_on    = [aws_internet_gateway.example] # aws_eipと同じ
+
+  tags = {
+    Name = "nat_gateway_0"
+  }
 }
 
 resource "aws_nat_gateway" "nat_gateway_1" {
   allocation_id = aws_eip.nat_gateway_1.id
   subnet_id     = aws_subnet.public_1.id
   depends_on    = [aws_internet_gateway.example]
+
+  tags = {
+    Name = "nat_gateway_1"
+  }
 }

@@ -3,7 +3,6 @@ resource "aws_lb" "example" {
   internal                   = false # VPC内部向け or インターネット向け
   load_balancer_type         = "application"
   idle_timeout               = 60
-  enable_deletion_protection = true # 削除保護。基本設定しておいたほうが良い。
 
   subnets = [
     aws_subnet.public_0.id,

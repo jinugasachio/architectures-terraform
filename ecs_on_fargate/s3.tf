@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "alb_log" {
 
     principals {
       type = "AWS"
-      identifiers = ["116413160048"]
+      identifiers = ["*"] # 一時的な記述後で書き直す
     }
   }
 }

@@ -24,7 +24,7 @@ resource "aws_s3_bucket_public_access_block" "name" {
 
 resource "aws_s3_bucket" "public" {
   bucket = "ugajin-public-bucket-by-terraform"
-  acl = "public-read" # アクセスコントロールリスト。アクセスするユーザーにバケット・オブジェクトへのアクセスを許可するもの。
+  acl    = "public-read" # アクセスコントロールリスト。アクセスするユーザーにバケット・オブジェクトへのアクセスを許可するもの。
 
   cors_rule { # cors = Cross-Origin Resource Sharing
     allowed_origins = ["https://example.com"]
@@ -35,8 +35,9 @@ resource "aws_s3_bucket" "public" {
 }
 
 resource "aws_s3_bucket" "alb_log" {
-  bucket = "ugajin-alb-log-bucket-by-terraform"
-
+  bucket        = "ugajin-alb-log-bucket-by-terraform"
+  force_destroy = true # オブジェクトがあってもバケット削除できるようにする。
+  
   lifecycle_rule {
     enabled = true
 
@@ -53,12 +54,12 @@ resource "aws_s3_bucket_policy" "alb_log" {
 
 data "aws_iam_policy_document" "alb_log" {
   statement {
-    effect = "Allow"
-    actions = ["s3:PutObject"]
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${aws_s3_bucket.alb_log.id}/*"]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"] # 一時的な記述後で書き直す
     }
   }

@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "public" {
 resource "aws_s3_bucket" "alb_log" {
   bucket        = "ugajin-alb-log-bucket-by-terraform"
   force_destroy = true # オブジェクトがあってもバケット削除できるようにする。
-  
+
   lifecycle_rule {
     enabled = true
 
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "alb_log" {
 
     principals {
       type        = "AWS"
-      identifiers = ["*"] # 一時的な記述後で書き直す
+      identifiers = ["582318560864"] # ここはAWSのユーザーアカウントIDではなく、ロードバランサーのリージョン毎のIDであることに注意！
     }
   }
 }

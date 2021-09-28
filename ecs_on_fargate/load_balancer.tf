@@ -3,10 +3,10 @@
 **********************************/
 
 resource "aws_lb" "example" {
-  name                       = "example"
-  internal                   = false # VPC内部向け or インターネット向け
-  load_balancer_type         = "application"
-  idle_timeout               = 60
+  name               = "example"
+  internal           = false # VPC内部向け or インターネット向け
+  load_balancer_type = "application"
+  idle_timeout       = 60
 
   subnets = [
     aws_subnet.public_0.id,
@@ -49,8 +49,8 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.example.arn
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn = aws_acm_certificate.example.arn
-  ssl_policy = "ELBSecurityPolicy-2016-08" # デフォルト
+  certificate_arn   = aws_acm_certificate.example.arn
+  ssl_policy        = "ELBSecurityPolicy-2016-08" # デフォルト
 
   default_action {
     type = "fixed-response" # 固定のレスポンスを応答
@@ -59,6 +59,22 @@ resource "aws_lb_listener" "https" {
       content_type = "text/plain"
       message_body = "これはHTTPSです"
       status_code  = "200"
+    }
+  }
+}
+
+resource "aws_lb_listener" "redirect_http_to_https" {
+  load_balancer_arn = aws_lb.example.arn
+  port              = "8080"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 }

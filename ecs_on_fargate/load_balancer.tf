@@ -29,6 +29,28 @@ output "alb_dns_name" {
   value = aws_lb.example.dns_name
 }
 
+resource "aws_lb_target_group" "example" {
+  name                 = "example"
+  target_type          = "ip"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = aws_vpc.example.id
+  deregistration_delay = 300
+
+  health_check {
+    path                = "/"
+    healthy_threshold   = 5 # 何回のヘルスチェック成功でhealthyとするか
+    unhealthy_threshold = 2 # 何回のヘルスチェック失敗でunhealthyとするか
+    timeout             = 5 # 5秒以上経ったらタイムアウトとする
+    interval            = 30
+    matcher             = 200
+    port                = "traffic-port"
+    protocol            = "HTTP"
+  }
+
+  depends_on = [aws_lb.example]
+}
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.example.arn
   port              = "80"

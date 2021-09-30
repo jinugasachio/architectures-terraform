@@ -25,7 +25,7 @@ resource "aws_lb_target_group" "for_ecs" {
 
   health_check {
     interval = 10
-    timeout  = 20
+    timeout  = 5
     port     = "traffic-port"
   }
 }

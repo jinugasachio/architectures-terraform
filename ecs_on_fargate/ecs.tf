@@ -10,8 +10,8 @@ resource "aws_ecs_cluster" "example" {
 
 resource "aws_ecs_task_definition" "example" {
   family                   = "example"
-  cpu                      = "256"     # FARGATEの場合はrequired
-  memory                   = "512"     # FARGATEの場合はrequired
+  cpu                      = "256"    # FARGATEの場合はrequired
+  memory                   = "512"    # FARGATEの場合はrequired
   network_mode             = "awsvpc" # FARGATEの場合はrequired かつ aws_vpcを指定する。https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/AWS_Fargate.html 
   requires_compatibilities = ["FARGATE"]
   container_definitions    = file("./container_definitions.json")
@@ -29,7 +29,7 @@ resource "aws_ecs_service" "example" {
   # aws_vpcのネットワークモードの際は必須項目。むしろ他のモードの時は設定できない。
   network_configuration {
     assign_public_ip = false # FARGATEタイプの場合のみ設定可能。今回はprivateにしたいのでfalse。
-    security_groups = [module.nginx_sg.security_group_id]
+    security_groups  = [module.nginx_sg.security_group_id]
 
     subnets = [
       aws_subnet.private_0.id,
@@ -60,4 +60,14 @@ module "nginx_sg" {
 
 data "aws_iam_policy" "ecs_task_execution_role_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+data "aws_iam_policy_document" "ecs_task_execution" {
+  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ssm:GetParameters", "kms:Decrypt"]
+    resources = ["*"]
+  }
 }

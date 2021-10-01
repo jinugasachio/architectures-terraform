@@ -26,6 +26,15 @@ resource "aws_ecs_service" "example" {
   platform_version                  = "1.4.0" # デフォルトはLATESTだが、名前に反して最新ではない場合がある。ので明示するのがベストプラクティス。https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/platform_versions.html 
   health_check_grace_period_seconds = 60
 
+  network_configuration {
+    assign_public_ip = false
+    security_groups = [module.nginx_sg.security_group_id]
+
+    subnets = [
+      aws_subnet.private_0.id,
+      aws_subnet.private_1.id
+    ]
+  }
   load_balancer {
     target_group_arn = aws_lb_target_group.example.arn
     container_name   = "example"

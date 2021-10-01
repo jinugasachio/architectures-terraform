@@ -36,10 +36,17 @@ resource "aws_ecs_service" "example" {
       aws_subnet.private_1.id
     ]
   }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.example.arn
     container_name   = "example"
     container_port   = 80
+  }
+
+  # FARGATEの場合デプロイのたびにタスク定義が更新されplan時に差分がでる。
+  # よってterraformではタスク定義の変更を無視すべき。
+  lifecycle {
+    ignore_changes = [task_definition]
   }
 }
 

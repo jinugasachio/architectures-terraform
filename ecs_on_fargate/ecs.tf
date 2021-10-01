@@ -26,8 +26,9 @@ resource "aws_ecs_service" "example" {
   platform_version                  = "1.4.0" # デフォルトはLATESTだが、名前に反して最新ではない場合がある。ので明示するのがベストプラクティス。https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/platform_versions.html 
   health_check_grace_period_seconds = 60
 
+  # aws_vpcのネットワークモードの際は必須項目。むしろ他のモードの時は設定できない。
   network_configuration {
-    assign_public_ip = false
+    assign_public_ip = false # FARGATEタイプの場合のみ設定可能。今回はprivateにしたいのでfalse。
     security_groups = [module.nginx_sg.security_group_id]
 
     subnets = [

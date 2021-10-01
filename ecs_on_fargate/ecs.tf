@@ -32,3 +32,11 @@ resource "aws_ecs_service" "example" {
     container_port   = 80
   }
 }
+
+module "nginx_sg" {
+  source      = "./security_group"
+  name        = "nginx-sg"
+  vpc_id      = aws_vpc.example.id
+  port        = 8080
+  cidr_blocks = [aws_vpc.example.cidr_blocks]
+}

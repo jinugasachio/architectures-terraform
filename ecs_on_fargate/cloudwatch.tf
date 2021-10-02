@@ -17,9 +17,9 @@ resource "aws_cloudwatch_event_target" "example_batch" {
   arn       = aws_ecs_cluster.example.arn
 
   ecs_target {
-    launch_type = "FARGATE"
-    task_count = 1
-    platform_version = "1.4.0"
+    launch_type         = "FARGATE"
+    task_count          = 1
+    platform_version    = "1.4.0"
     task_definition_arn = aws_ecs_task_definition.example_batch.arn
 
     network_configuration {

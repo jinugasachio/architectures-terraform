@@ -18,6 +18,16 @@ resource "aws_ecs_task_definition" "example" {
   execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
 
+resource "aws_ecs_task_definition" "example_batch" {
+  family                   = "example-batch"
+  cpu                      = "256"    # FARGATEの場合はrequired
+  memory                   = "512"    # FARGATEの場合はrequired
+  network_mode             = "awsvpc" # FARGATEの場合はrequired かつ aws_vpcを指定する。https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/AWS_Fargate.html 
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = file("./batch_container_definitions.json")
+  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
+}
+
 resource "aws_ecs_service" "example" {
   name                              = "example"
   cluster                           = aws_ecs_cluster.example.arn

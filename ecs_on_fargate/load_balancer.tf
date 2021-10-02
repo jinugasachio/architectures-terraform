@@ -103,10 +103,10 @@ resource "aws_lb_listener" "redirect_http_to_https" {
 
 resource "aws_lb_listener_rule" "example" {
   listener_arn = aws_lb_listener.https.arn
-  priority = 100
+  priority     = 100
 
   action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.example.arn
   }
 

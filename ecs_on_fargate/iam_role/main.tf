@@ -12,8 +12,8 @@ data "aws_iam_policy_document" "assume_role" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "Services"
-      identifiers = [var.idetifier]
+      type        = "Service"
+      identifiers = [var.identifier]
     }
   }
 }

@@ -8,7 +8,7 @@
       "options": {
         "awslogs-region": "ap-northeast-1",
         "awslogs-stream-prefix": "nginx",
-        "awslogs-group": "a/ecs/example"
+        "awslogs-group": "/ecs/example"
       }
     },
     "portMappings": [

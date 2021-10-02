@@ -56,9 +56,9 @@ resource "aws_ecs_service" "example" {
 
   # FARGATEの場合デプロイのたびにタスク定義が更新されplan時に差分がでる。
   # よってterraformではタスク定義の変更を無視すべき。
-  lifecycle {
-    ignore_changes = [task_definition]
-  }
+  # lifecycle {
+  #   ignore_changes = [task_definition]
+  # }
 }
 
 module "nginx_sg" {
@@ -88,6 +88,24 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 
 data "aws_iam_policy" "ecs_task_execution_role_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+
+  # {
+  #   "Version": "2012-10-17",
+  #   "Statement": [
+  #     {
+  #       "Effect": "Allow",
+  #       "Action": [
+  #         "ecr:GetAuthorizationToken",
+  #         "ecr:BatchCheckLayerAvailability",
+  #         "ecr:GetDownloadUrlForLayer",
+  #         "ecr:BatchGetImage",
+  #         "logs:CreateLogStream",
+  #         "logs:PutLogEvents"
+  #       ],
+  #       "Resource": "*"
+  #     }
+  #   ]
+  # }
 }
 
 module "ecs_events_role" {

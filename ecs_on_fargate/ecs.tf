@@ -69,8 +69,11 @@ module "nginx_sg" {
   cidr_blocks = [aws_vpc.example.cidr_block]
 }
 
-data "aws_iam_policy" "ecs_task_execution_role_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+module "ecs_task_execution_role" {
+  source     = "./iam_role"
+  name       = "ecs-task-execution"
+  identifier = "ecs-tasks.amazonaws.com" # ECSでこのroleを使用することを宣言
+  policy     = data.aws_iam_policy_document.ecs_task_execution.json
 }
 
 data "aws_iam_policy_document" "ecs_task_execution" {
@@ -83,9 +86,6 @@ data "aws_iam_policy_document" "ecs_task_execution" {
   }
 }
 
-module "ecs_task_execution_role" {
-  source     = "./iam_role"
-  name       = "ecs-task-execution"
-  identifier = "ecs-tasks.amazonaws.com" # ECSでこのroleを使用することを宣言
-  policy     = data.aws_iam_policy_document.ecs_task_execution.json
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }

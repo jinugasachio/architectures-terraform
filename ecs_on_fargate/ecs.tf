@@ -15,6 +15,7 @@ resource "aws_ecs_task_definition" "example" {
   network_mode             = "awsvpc" # FARGATEの場合はrequired かつ aws_vpcを指定する。https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/AWS_Fargate.html 
   requires_compatibilities = ["FARGATE"]
   container_definitions    = file("./container_definitions.json")
+  execution_role_arn = module.ecs_task_execution_role.iam_role_arn
 }
 
 resource "aws_ecs_service" "example" {
@@ -71,3 +72,11 @@ data "aws_iam_policy_document" "ecs_task_execution" {
     resources = ["*"]
   }
 }
+
+module "ecs_task_execution_role" {
+  source     = "./iam_role"
+  name       = "ecs-task-execution"
+  identifier = "ecs-task.amazonaws.com" # ECSでこのroleを使用することを宣言
+  policy     = data.aws_iam_policy_document.ecs_task_execution.json
+}
+

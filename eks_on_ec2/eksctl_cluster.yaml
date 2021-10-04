@@ -1,0 +1,20 @@
+vpc:
+  subnets:
+    private:
+      ${az-1}:
+        id: ${private_subnet1}
+      ${az-2}:
+        id: ${private_subnet2}
+      ${az-3}:
+        id: ${private_subnet3}
+    public:
+      ${az-1}:
+        id: ${public_subnet1}
+      ${az-2}:
+        id: ${public_subnet2}
+      ${az-3}:
+        id: ${public_subnet3}
+nodeGroups:
+  - name: ng
+    instanceType: t2.micro
+    desiredCapacity: 1

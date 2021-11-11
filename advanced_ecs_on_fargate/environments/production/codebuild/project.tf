@@ -14,11 +14,12 @@ resource "aws_codebuild_project" "continuous_apply" {
   environment {
     type            = "LINUX_CONTAINER"
     compute_type    = "BUILD_GENERAL1_SMALL"
-    image           = "hashicorp/terraform:0.12.5"
-    privileged_mode = false
+    image           = "hashicorp/terraform:0.12.5" # build projectで使用したいdocker image
+    privileged_mode = false                        # dockerコンテナを特権モードにするか否か
   }
 
-  provisioner "local-exec" {
+  
+  provisioner "local-exec" { # https://www.terraform.io/docs/language/resources/provisioners/local-exec.html
     command = <<-EOT
       aws codebuild import-source-credentials \
         --server-type GITHUB \

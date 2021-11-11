@@ -3,8 +3,8 @@ resource "aws_codebuild_project" "continuous_apply" {
   service_role = module.continuous_apply_codebuild_role.iam_role_arn
 
   source {
-    type     = "GITHUB"
-    location = "https://github.com/jinugasachio/architectures-terraform.git"
+    type     = "GITHUB" # ビルドするコードがあるリポジトリの種類
+    location = "https://github.com/jinugasachio/architectures-terraform/tree/main/advanced_ecs_on_fargate" # GITHUB or S3の場合は指定する
   }
 
   artifacts {
